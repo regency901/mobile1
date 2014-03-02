@@ -11,20 +11,28 @@ var EmployeeView = function(employee) {
         return this;
     };
 
+    this.onSuccess = function(contact) {
+        app.showAlert("Save Success", "Success");
+    };
+
+    this.onError = function(contactError) {
+        app.showAlert("Error = " + contactError.code, "Error");
+    };
+
     this.addToContacts = function(event) {
         event.preventDefault();
         console.log('addToContacts');
-        if (!navigator.contacts) {
-            app.showAlert("Contacts API not supported", "Error");
-            return;
-        }
+//        if (!navigator.contacts) {
+//            app.showAlert("Contacts API not supported", "Error");
+//            return;
+//        }
         var contact = navigator.contacts.create();
         contact.name = {givenName: employee.firstName, familyName: employee.lastName};
         var phoneNumbers = [];
         phoneNumbers[0] = new ContactField('work', employee.officePhone, false);
         phoneNumbers[1] = new ContactField('mobile', employee.cellPhone, true); // preferred number
         contact.phoneNumbers = phoneNumbers;
-        contact.save();
+        contact.save(this.onSuccess, this.onError);
         return false;
     };
 
