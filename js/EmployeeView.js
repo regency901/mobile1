@@ -22,11 +22,15 @@ var EmployeeView = function(employee) {
     this.addToContacts = function(event) {
         event.preventDefault();
         console.log('addToContacts');
+
+        app.showAlert("About to add a contact", "Debug");
+
 //        if (!navigator.contacts) {
 //            app.showAlert("Contacts API not supported", "Error");
 //            return;
 //        }
         var contact = navigator.contacts.create();
+        app.showAlert("contacts.create() called", "Debug");
         contact.name = {givenName: employee.firstName, familyName: employee.lastName};
         var phoneNumbers = [];
         phoneNumbers[0] = new ContactField('work', employee.officePhone, false);
