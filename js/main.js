@@ -33,15 +33,21 @@ var app = {
     },
 
     route: function() {
+        var self = this;
         var hash = window.location.hash;
         if (!hash) {
-            $('body').html(new HomeView(this.store).render().el);
+            if (this.homePage) {
+                this.slidePage(this.homePage);
+            } else {
+                this.homePage = new HomeView(this.store).render();
+                this.slidePage(this.homePage);
+            }
             return;
         }
-        var match = hash.match(app.detailsURL);
+        var match = hash.match(this.detailsURL);
         if (match) {
             this.store.findById(Number(match[1]), function(employee) {
-                $('body').html(new EmployeeView(employee).render().el);
+                self.slidePage(new EmployeeView(employee).render());
             });
         }
     },
